@@ -25,7 +25,9 @@ export default function Weather() {
     const [feelslike,setFeelslike] = useState(0)
     const [input,setInput] = useState('')
     
-    const api_key = process.env.REACT_APP_WEATHER_API;
+    // const api_key = process.env.REACT_APP_WEATHER_API;
+    const api_key = "c5bdd6f900d13018e9b5121254011a46";
+
 
     const search = async () =>
     {
