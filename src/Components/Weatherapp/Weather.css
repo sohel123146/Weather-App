@@ -1,6 +1,7 @@
 body{
     font-family: 'Poppins', sans-serif;
     background-color: #00000c;
+    background: url('../Assets/sunset.jpg') no-repeat center center/cover;
 }
 
 *{
@@ -20,10 +21,13 @@ body{
 
 aside
 {
-    background-image: linear-gradient(180deg,#130754 0%,#3b2f80 100%);
     width: 300px;
     margin-left:-100px;
     border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.3); /* White background with 70% opacity */
+    border: 1px solid rgba(255, 255, 255, 0.7); /* Slightly transparent border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    max-width: 300px;
 }
 
 .topbar
@@ -121,12 +125,16 @@ aside
 .humidity_card {
     width:150px;
     height:150px;
-    background-image: linear-gradient(180deg,#130754 0%,#3b2f80 100%);
     border-radius:20px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    background-color: rgba(255, 255, 255, 0.3); /* White background with 70% opacity */
+    border: 1px solid rgba(255, 255, 255, 0.7); /* Slightly transparent border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    max-width: 300px;
+    text-align: center;
   }
 
 .humidity_details
@@ -139,25 +147,29 @@ aside
 
 .humidity_details > h1
 {
-    color:#ffffff;
+    color:black;
     font-size:20px;
 }
 
 .humidity_value
 {
-    color:#ffffff;
+    color:black;
 
 }
 
 .wind_card {
     width:150px;
     height:150px;
-    background-image: linear-gradient(180deg,#130754 0%,#3b2f80 100%);
     border-radius:20px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    background-color: rgba(255, 255, 255, 0.3); /* White background with 70% opacity */
+    border: 1px solid rgba(255, 255, 255, 0.7); /* Slightly transparent border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    max-width: 300px;
+    text-align: center;
   }
 
 .wind_details
@@ -170,25 +182,29 @@ aside
 
 .wind_details > h1
 {
-    color:#ffffff;
+    color:black;
     font-size:20px;
 }
 
 .wind_value
 {
-    color:#ffffff;
+    color:black;
 
 }
 
 .pressure_card {
     width:150px;
     height:150px;
-    background-image: linear-gradient(180deg,#130754 0%,#3b2f80 100%);
     border-radius:20px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    background-color: rgba(255, 255, 255, 0.3); /* White background with 70% opacity */
+    border: 1px solid rgba(255, 255, 255, 0.7); /* Slightly transparent border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    max-width: 300px;
+    text-align: center;
   }
 
 .pressure_details
@@ -201,25 +217,31 @@ aside
 
 .pressure_details > h1
 {
-    color:#ffffff;
+    color:black;
     font-size:20px;
 }
 
 .pressure_value
 {
-    color:#ffffff;
+    color:black;
 }
 
 .feelslike_card {
     width:150px;
     height:150px;
-    background-image: linear-gradient(180deg,#130754 0%,#3b2f80 100%);
     border-radius:20px;
+    padding:20px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    background-color: rgba(255, 255, 255, 0.3); /* White background with 70% opacity */
+    border: 1px solid rgba(255, 255, 255, 0.7); /* Slightly transparent border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    max-width: 300px;
+    text-align: center;
   }
+  
 
 .feelslike_details
 {
@@ -231,11 +253,75 @@ aside
 
 .feelslike_details > h1
 {
-    color:#ffffff;
+    color:black;
     font-size:20px;
 }
 
 .feelslike_value
 {
-    color:#ffffff;
+    color:black;
 }
+
+
+@media (max-width: 768px) {
+    .container {
+      padding: 10px;
+    }
+  
+    .topbar {
+      flex-direction: column;
+      margin-bottom: 10px;
+    }
+  
+    .cityInput {
+      margin-right: 0;
+      margin-bottom: 10px;
+      width: 100%;
+    }
+  
+    .cloud-icon img {
+      width: 100px;
+      height: 100px;
+    }
+  
+    .weather-temp {
+      font-size: 36px;
+    }
+  
+    .weather-location,
+    .description,
+    .coord {
+      font-size: 16px;
+    }
+  
+    .highlights div {
+      flex: 1 1 100%;
+      max-width: none;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .highlights {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .weather-temp {
+      font-size: 28px;
+    }
+  
+    .weather-location,
+    .description,
+    .coord {
+      font-size: 14px;
+    }
+  
+    .highlights h1 {
+      font-size: 14px;
+    }
+  
+    .highlights img {
+      width: 16px;
+      height: 16px;
+    }
+  }
