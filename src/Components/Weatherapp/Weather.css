@@ -123,7 +123,7 @@ aside
 }
 
 .humidity_card {
-    width:150px;
+    width:200px;
     height:150px;
     border-radius:20px;
     display: flex;
@@ -158,7 +158,7 @@ aside
 }
 
 .wind_card {
-    width:150px;
+    width:200px;
     height:150px;
     border-radius:20px;
     display: flex;
@@ -193,7 +193,7 @@ aside
 }
 
 .pressure_card {
-    width:150px;
+    width:200px;
     height:150px;
     border-radius:20px;
     display: flex;
@@ -219,6 +219,8 @@ aside
 {
     color:black;
     font-size:20px;
+    border:1px solid red;
+
 }
 
 .pressure_value
@@ -227,7 +229,7 @@ aside
 }
 
 .feelslike_card {
-    width:150px;
+    width:200px;
     height:150px;
     border-radius:20px;
     padding:20px;
@@ -255,6 +257,7 @@ aside
 {
     color:black;
     font-size:20px;
+    border:1px solid red;
 }
 
 .feelslike_value
@@ -336,5 +339,9 @@ aside
     .highlights img {
       width: 16px;
       height: 16px;
+    }
+
+    .feelslike_card,.humidity_card,.pressure_card,.wind_card{
+        width:150px;
     }
   }
