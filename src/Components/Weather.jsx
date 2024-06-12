@@ -1,19 +1,26 @@
 import React, { useEffect, useState, useCallback } from "react";
+import { useDate } from "../Utils/useDate";
 import searchIcon from "./Assets/icons/search.png";
 import clearIcon from "./Assets/icons/clear.png";
 import cloudIcon from "./Assets/icons/cloud.png";
 import drizzleIcon from "./Assets/icons/drizzle.png";
-import humidityIcon from "./Assets/icons/humidity.svg";
 import rainIcon from "./Assets/icons/rain.png";
 import snowIcon from "./Assets/icons/snow.png";
 import windIcon from "./Assets/icons/wind.svg";
+import humidityIcon from "./Assets/icons/humidity.svg";
 import pressureIcon from "./Assets/icons/pressure.svg";
 import feelsIcon from "./Assets/icons/feels_like.svg";
-import { useDate } from "../Utils/useDate";
 import clearBackground from "./Assets/backgrounds/Clear.jpg";
 import cloudyBackground from "./Assets/backgrounds/Cloudy.jpg";
 import rainBackground from "./Assets/backgrounds/Rainy.jpg";
 import snowBackground from "./Assets/backgrounds/snow.jpg";
+
+function getDayFromDate(dateString) {
+  const date = new Date(dateString);
+  const options = { weekday: "long" };
+  const day = date.toLocaleDateString("en-US", options);
+  return day;
+}
 
 export default function Weather() {
   const [weather, setWeather] = useState({
@@ -31,7 +38,7 @@ export default function Weather() {
   const [input, setInput] = useState("");
   const [icon, setIcon] = useState(cloudIcon);
 
-  const api_key = "c5bdd6f900d13018e9b5121254011a46";
+  const apikey = "d94ef4569ed145c988b133335241206";
 
   const setBodyBackground = useCallback((background) => {
     document.body.style.backgroundImage = `url(${background})`;
@@ -41,55 +48,67 @@ export default function Weather() {
   }, []);
 
   const search = useCallback(
-    async (city = "London") => {
+    async (location = "London") => {
       try {
-        let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=Metric&appid=${api_key}`;
+        const url = `http://api.weatherapi.com/v1/forecast.json?key=${apikey}&q=${location}&days=3&aqi=no&alerts=no`;
         let data = await fetch(url);
         let parsedData = await data.json();
 
+        const currentWeather = parsedData.current;
+        const forecast = parsedData.forecast.forecastday;
+
         setWeather({
-          temp: parsedData.main.temp,
-          location: parsedData.name,
-          lat: parsedData.coord.lat,
-          lon: parsedData.coord.lon,
-          des: parsedData.weather[0].description,
-          humidity: parsedData.main.humidity,
-          wind: parsedData.wind.speed,
-          pressure: parsedData.main.pressure,
-          feelslike: parsedData.main.feels_like,
+          temp: currentWeather.temp_c,
+          location: parsedData.location.name,
+          lat: parsedData.location.lat,
+          lon: parsedData.location.lon,
+          des: currentWeather.condition.text,
+          humidity: currentWeather.humidity,
+          wind: currentWeather.wind_kph,
+          pressure: currentWeather.pressure_mb,
+          feelslike: currentWeather.feelslike_c,
+          forecast: forecast.map((day) => ({
+            date: day.date,
+            icon: day.day.condition.icon,
+            temp: day.day.avgtemp_c,
+            description: day.day.condition.text,
+          })),
         });
 
         setInput("");
 
-        switch (parsedData.weather[0].icon) {
-          case "01d":
-          case "01n":
+        // Set background based on current weather condition
+        switch (currentWeather.condition.icon) {
+          case "//cdn.weatherapi.com/weather/64x64/day/113.png":
+          case "//cdn.weatherapi.com/weather/64x64/night/113.png":
             setIcon(clearIcon);
             setBodyBackground(clearBackground);
             break;
-          case "02d":
-          case "02n":
+          case "//cdn.weatherapi.com/weather/64x64/day/116.png":
+          case "//cdn.weatherapi.com/weather/64x64/night/116.png":
             setIcon(cloudIcon);
             setBodyBackground(cloudyBackground);
             break;
-          case "03d":
-          case "03n":
-          case "04d":
-          case "04n":
-          case "50d":
-          case "50n":
+          case "//cdn.weatherapi.com/weather/64x64/day/119.png":
+          case "//cdn.weatherapi.com/weather/64x64/night/119.png":
+          case "//cdn.weatherapi.com/weather/64x64/day/122.png":
+          case "//cdn.weatherapi.com/weather/64x64/night/122.png":
+          case "//cdn.weatherapi.com/weather/64x64/day/143.png":
+          case "//cdn.weatherapi.com/weather/64x64/night/143.png":
             setIcon(drizzleIcon);
             setBodyBackground(rainBackground);
             break;
-          case "09d":
-          case "09n":
-          case "10d":
-          case "10n":
+          case "//cdn.weatherapi.com/weather/64x64/day/176.png":
+          case "//cdn.weatherapi.com/weather/64x64/night/176.png":
+          case "//cdn.weatherapi.com/weather/64x64/day/179.png":
+          case "//cdn.weatherapi.com/weather/64x64/night/179.png":
             setIcon(rainIcon);
             setBodyBackground(rainBackground);
             break;
-          case "13d":
-          case "13n":
+          case "//cdn.weatherapi.com/weather/64x64/day/227.png":
+          case "//cdn.weatherapi.com/weather/64x64/night/227.png":
+          case "//cdn.weatherapi.com/weather/64x64/day/230.png":
+          case "//cdn.weatherapi.com/weather/64x64/night/230.png":
             setIcon(snowIcon);
             setBodyBackground(snowBackground);
             break;
@@ -153,38 +172,49 @@ export default function Weather() {
           </div>
         </div>
       </aside>
-      {input.length === 0 && (
+      <section className="highlights-container">
         <div className="highlights">
           <div className="humidity_card">
             <div className="humidity_details">
               <img src={humidityIcon} alt="humidity" width="20" height="20" />
-              <h1>HUMIDITY</h1>
+              <h3>HUMIDITY</h3>
             </div>
             <div className="humidity_value">{weather.humidity}°</div>
           </div>
           <div className="wind_card">
             <div className="wind_details">
               <img src={windIcon} alt="wind" width="20" height="20" />
-              <h1>WIND</h1>
+              <h3>WIND</h3>
             </div>
             <div className="wind_value">{weather.wind} km/h</div>
           </div>
           <div className="pressure_card">
             <div className="pressure_details">
               <img src={pressureIcon} alt="pressure" width="20" height="20" />
-              <h1>PRESSURE</h1>
+              <h3>PRESSURE</h3>
             </div>
             <div className="pressure_value">{weather.pressure} hPa</div>
           </div>
           <div className="feelslike_card">
             <div className="feelslike_details">
               <img src={feelsIcon} alt="feels like" width="20" height="20" />
-              <h1>FEELS LIKE</h1>
+              <h3>FEELS LIKE</h3>
             </div>
             <div className="feelslike_value">{weather.feelslike}°</div>
           </div>
         </div>
-      )}
+        {weather.forecast && (
+          <div className="forecast">
+            {weather.forecast.map((day, index) => (
+              <div key={index} className="forecast-day">
+                <p>{getDayFromDate(day.date)}</p>
+                <img src={day.icon} alt={day.description} />
+                <p>{day.temp}&deg;C</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
     </div>
   );
 }
