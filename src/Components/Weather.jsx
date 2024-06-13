@@ -36,7 +36,7 @@ export default function Weather() {
     pressure: 0,
     feelslike: 0,
     forecast: [],
-    hourly: []
+    hourly: [],
   });
 
   const [input, setInput] = useState("");
@@ -54,7 +54,7 @@ export default function Weather() {
   const search = useCallback(
     async (location) => {
       try {
-        const url = `http://api.weatherapi.com/v1/forecast.json?key=${apikey}&q=${location}&days=3&aqi=no&alerts=no`;        
+        const url = `http://api.weatherapi.com/v1/forecast.json?key=${apikey}&q=${location}&days=3&aqi=no&alerts=no`;
         let data = await fetch(url);
         let parsedData = await data.json();
 
@@ -78,12 +78,12 @@ export default function Weather() {
             temp: day.day.avgtemp_c,
             description: day.day.condition.text,
           })),
-          hourly: hourly.map(hour => ({
+          hourly: hourly.map((hour) => ({
             time: hour.time,
             icon: hour.condition.icon,
             temp: hour.temp_c,
-            description: hour.condition.text
-          }))
+            description: hour.condition.text,
+          })),
         });
 
         setInput("");
@@ -217,31 +217,31 @@ export default function Weather() {
           </div>
         )}
       </section>
-      <section>
-        <div>
-          {weather.forecast.length > 0 && (
-            <div className="minicard-items">
-              {weather.forecast.map((day, index) => (
-                <Minicards
-                  key={index}
-                  day={day}
-                  index={index}
-                  getDayFromDate={getDayFromDate}
-                />
+      {input.length === 0 && (
+        <section>
+          <div>
+            {weather.forecast.length > 0 && (
+              <div className="minicard-items">
+                {weather.forecast.map((day, index) => (
+                  <Minicards
+                    key={index}
+                    day={day}
+                    index={index}
+                    getDayFromDate={getDayFromDate}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+          {weather.hourly.length > 0 && (
+            <div className="hourly-forecast">
+              {weather.hourly.map((hour, index) => (
+                <Hourlycards key={index} hour={hour} />
               ))}
             </div>
           )}
-        </div>
-        {weather.hourly.length > 0 && (
-          <div className="hourly-forecast">
-            {weather.hourly.map((hour, index) => (
-              <Hourlycards
-              key={index}
-              hour={hour}/>
-            ))}
-          </div>
-        )}
-      </section>
+        </section>
+      )}
     </div>
   );
 }
