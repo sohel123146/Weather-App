@@ -1,19 +1,21 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useDate } from "../Utils/useDate";
 import searchIcon from "./Assets/icons/search.png";
 import clearIcon from "./Assets/icons/clear.png";
 import cloudIcon from "./Assets/icons/cloud.png";
 import drizzleIcon from "./Assets/icons/drizzle.png";
+import humidityIcon from "./Assets/icons/humidity.svg";
 import rainIcon from "./Assets/icons/rain.png";
 import snowIcon from "./Assets/icons/snow.png";
 import windIcon from "./Assets/icons/wind.svg";
-import humidityIcon from "./Assets/icons/humidity.svg";
 import pressureIcon from "./Assets/icons/pressure.svg";
 import feelsIcon from "./Assets/icons/feels_like.svg";
+import { useDate } from "../Utils/useDate";
 import clearBackground from "./Assets/backgrounds/Clear.jpg";
 import cloudyBackground from "./Assets/backgrounds/Cloudy.jpg";
 import rainBackground from "./Assets/backgrounds/Rainy.jpg";
 import snowBackground from "./Assets/backgrounds/snow.jpg";
+import Minicards from "./Minicards";
+import Hourlycards from "./Hourlycards";
 
 function getDayFromDate(dateString) {
   const date = new Date(dateString);
@@ -33,6 +35,8 @@ export default function Weather() {
     wind: 0,
     pressure: 0,
     feelslike: 0,
+    forecast: [],
+    hourly: []
   });
 
   const [input, setInput] = useState("");
@@ -48,14 +52,15 @@ export default function Weather() {
   }, []);
 
   const search = useCallback(
-    async (location = "London") => {
+    async (location) => {
       try {
-        const url = `http://api.weatherapi.com/v1/forecast.json?key=${apikey}&q=${location}&days=3&aqi=no&alerts=no`;
+        const url = `http://api.weatherapi.com/v1/forecast.json?key=${apikey}&q=${location}&days=3&aqi=no&alerts=no`;        
         let data = await fetch(url);
         let parsedData = await data.json();
 
         const currentWeather = parsedData.current;
         const forecast = parsedData.forecast.forecastday;
+        const hourly = forecast[0].hour;
 
         setWeather({
           temp: currentWeather.temp_c,
@@ -73,6 +78,12 @@ export default function Weather() {
             temp: day.day.avgtemp_c,
             description: day.day.condition.text,
           })),
+          hourly: hourly.map(hour => ({
+            time: hour.time,
+            icon: hour.condition.icon,
+            temp: hour.temp_c,
+            description: hour.condition.text
+          }))
         });
 
         setInput("");
@@ -125,7 +136,7 @@ export default function Weather() {
   );
 
   useEffect(() => {
-    search();
+    search("London"); // Default location
   }, [search]);
 
   const handleOnChange = (event) => {
@@ -172,45 +183,61 @@ export default function Weather() {
           </div>
         </div>
       </aside>
-      <section className="highlights-container">
-        <div className="highlights">
-          <div className="humidity_card">
-            <div className="humidity_details">
-              <img src={humidityIcon} alt="humidity" width="20" height="20" />
-              <h3>HUMIDITY</h3>
-            </div>
-            <div className="humidity_value">{weather.humidity}°</div>
-          </div>
-          <div className="wind_card">
-            <div className="wind_details">
-              <img src={windIcon} alt="wind" width="20" height="20" />
-              <h3>WIND</h3>
-            </div>
-            <div className="wind_value">{weather.wind} km/h</div>
-          </div>
-          <div className="pressure_card">
-            <div className="pressure_details">
-              <img src={pressureIcon} alt="pressure" width="20" height="20" />
-              <h3>PRESSURE</h3>
-            </div>
-            <div className="pressure_value">{weather.pressure} hPa</div>
-          </div>
-          <div className="feelslike_card">
-            <div className="feelslike_details">
-              <img src={feelsIcon} alt="feels like" width="20" height="20" />
-              <h3>FEELS LIKE</h3>
-            </div>
-            <div className="feelslike_value">{weather.feelslike}°</div>
-          </div>
-        </div>
-        {weather.forecast && (
-          <div className="forecast">
-            {weather.forecast.map((day, index) => (
-              <div key={index} className="forecast-day">
-                <p>{getDayFromDate(day.date)}</p>
-                <img src={day.icon} alt={day.description} />
-                <p>{day.temp}&deg;C</p>
+      <section>
+        {input.length === 0 && (
+          <div className="highlights">
+            <div className="highlight_card">
+              <div className="highlight_details">
+                <img src={humidityIcon} alt="humidity" width="20" height="20" />
+                <h3 className="highlight-text">HUMIDITY</h3>
               </div>
+              <div className="highlight_value">{weather.humidity}%</div>
+            </div>
+            <div className="highlight_card">
+              <div className="highlight_details">
+                <img src={windIcon} alt="wind" width="20" height="20" />
+                <h3 className="highlight-text">WIND</h3>
+              </div>
+              <div className="highlight_value">{weather.wind} km/h</div>
+            </div>
+            <div className="highlight_card">
+              <div className="highlight_details">
+                <img src={pressureIcon} alt="pressure" width="20" height="20" />
+                <h3 className="highlight-text">PRESSURE</h3>
+              </div>
+              <div className="highlight_value">{weather.pressure} hPa</div>
+            </div>
+            <div className="highlight_card">
+              <div className="highlight_details">
+                <img src={feelsIcon} alt="feels like" width="20" height="20" />
+                <h3 className="highlight-text">FEELS LIKE</h3>
+              </div>
+              <div className="highlight_value">{weather.feelslike}°C</div>
+            </div>
+          </div>
+        )}
+      </section>
+      <section>
+        <div>
+          {weather.forecast.length > 0 && (
+            <div className="minicard-items">
+              {weather.forecast.map((day, index) => (
+                <Minicards
+                  key={index}
+                  day={day}
+                  index={index}
+                  getDayFromDate={getDayFromDate}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+        {weather.hourly.length > 0 && (
+          <div className="hourly-forecast">
+            {weather.hourly.map((hour, index) => (
+              <Hourlycards
+              key={index}
+              hour={hour}/>
             ))}
           </div>
         )}
