@@ -12,10 +12,13 @@ import feelsIcon from "./Assets/icons/feels_like.svg";
 import { useDate } from "../Utils/useDate";
 import clearBackground from "./Assets/backgrounds/Clear.jpg";
 import cloudyBackground from "./Assets/backgrounds/Cloudy.jpg";
-import rainBackground from "./Assets/backgrounds/Rainy.jpg";
+import rainBackground from "./Assets/backgrounds/Rain.jpg";
 import snowBackground from "./Assets/backgrounds/snow.jpg";
 import Minicards from "./Minicards";
 import Hourlycards from "./Hourlycards";
+import FarmerInfo from "./FramerInfo"
+import TravelerInfo from "./TravelerInfo";
+import EventPlannerInfo from "./EventPlannerInfo"
 
 function getDayFromDate(dateString) {
   const date = new Date(dateString);
@@ -24,7 +27,7 @@ function getDayFromDate(dateString) {
   return day;
 }
 
-export default function Weather() {
+const Weather = () => {
   const [weather, setWeather] = useState({
     temp: 0,
     location: "",
@@ -37,6 +40,9 @@ export default function Weather() {
     feelslike: 0,
     forecast: [],
     hourly: [],
+    rainProbability: 0,
+    soilMoisture: 0,
+    advisories: [],
   });
 
   const [input, setInput] = useState("");
@@ -54,7 +60,7 @@ export default function Weather() {
   const search = useCallback(
     async (location) => {
       try {
-        const url = `http://api.weatherapi.com/v1/forecast.json?key=${apikey}&q=${location}&days=3&aqi=no&alerts=no`;
+        const url = `http://api.weatherapi.com/v1/forecast.json?key=${apikey}&q=${location}&days=3&aqi=no&alerts=yes`;
         let data = await fetch(url);
         let parsedData = await data.json();
 
@@ -84,6 +90,9 @@ export default function Weather() {
             temp: hour.temp_c,
             description: hour.condition.text,
           })),
+          rainProbability: currentWeather.precip_mm,
+          soilMoisture: currentWeather.soil_moisture, // Assuming API provides this data
+          advisories: parsedData.alerts ? parsedData.alerts.alert : [],
         });
 
         setInput("");
@@ -136,7 +145,7 @@ export default function Weather() {
   );
 
   useEffect(() => {
-    search("London"); // Default location
+    search("India"); // Default location
   }, [search]);
 
   const handleOnChange = (event) => {
@@ -153,6 +162,7 @@ export default function Weather() {
   const { time } = useDate();
 
   return (
+    <>
     <div className="container">
       <aside>
         <div className="topbar">
@@ -161,7 +171,7 @@ export default function Weather() {
             value={input}
             onChange={handleOnChange}
             className="cityInput"
-            placeholder="search city"
+            placeholder="Search city"
           />
           <div className="search-icon" onClick={handleSearchClick}>
             <img src={searchIcon} alt="search" />
@@ -243,5 +253,14 @@ export default function Weather() {
         </section>
       )}
     </div>
+    <div className="users-container">
+      <FarmerInfo weather={weather}/>
+      <TravelerInfo weather={weather}/>
+      <EventPlannerInfo weather={weather}/>
+    </div>
+    </>
   );
-}
+};
+
+export default Weather;
+
