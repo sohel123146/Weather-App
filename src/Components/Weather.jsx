@@ -253,11 +253,11 @@ const Weather = () => {
         </section>
       )}
     </div>
-    <div className="users-container">
+    {input.length === 0 && (<div className="users-container">
       <FarmerInfo weather={weather}/>
       <TravelerInfo weather={weather}/>
       <EventPlannerInfo weather={weather}/>
-    </div>
+    </div>)}
     </>
   );
 };

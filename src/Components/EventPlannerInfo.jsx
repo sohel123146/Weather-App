@@ -6,12 +6,12 @@ function EventPlannerInfo({ weather }) {
   return (
     <div className="event-planner-info">
       <h3>Event Planner's Weather Information</h3>
-      <div className="highlight_card">
-        <img src={rainIcon} alt="rain" width="20" height="20" />
+      <div className="highlight-card">
+        <img src={rainIcon} alt="rain" width="30" height="30" />
         <div>Rain Probability {weather.rainProbability}%</div>
       </div>
-      <div className="highlight_card">
-        <img src={windIcon} alt="wind" width="20" height="20" />
+      <div className="highlight-card">
+        <img src={windIcon} alt="wind" width="30" height="30" />
         <div>Wind Speed {weather.wind} km/h</div>
       </div>
     </div>
