@@ -16,9 +16,10 @@ import rainBackground from "./Assets/backgrounds/Rain.jpg";
 import snowBackground from "./Assets/backgrounds/snow.jpg";
 import Minicards from "./Minicards";
 import Hourlycards from "./Hourlycards";
-import FarmerInfo from "./FarmerInfo"
-import TravelerInfo from "./TravelerInfo";
-import EventPlannerInfo from "./EventPlannerInfo"
+// import FarmerInfo from "./FarmerInfo"
+// import TravelerInfo from "./TravelerInfo";
+// import EventPlannerInfo from "./EventPlannerInfo"
+import WeatherInfo from "./WeatherInfo";
 
 function getDayFromDate(dateString) {
   const date = new Date(dateString);
@@ -253,10 +254,8 @@ const Weather = () => {
         </section>
       )}
     </div>
-    {input.length === 0 && (<div className="users-container">
-      <FarmerInfo weather={weather}/>
-      <TravelerInfo weather={weather}/>
-      <EventPlannerInfo weather={weather}/>
+    {input.length === 0 && (<div>
+      <WeatherInfo weather={weather}/>
     </div>)}
     </>
   );
