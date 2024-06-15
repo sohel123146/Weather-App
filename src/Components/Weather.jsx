@@ -16,7 +16,7 @@ import rainBackground from "./Assets/backgrounds/Rain.jpg";
 import snowBackground from "./Assets/backgrounds/snow.jpg";
 import Minicards from "./Minicards";
 import Hourlycards from "./Hourlycards";
-import FarmerInfo from "./FramerInfo"
+import FarmerInfo from "./FarmerInfo"
 import TravelerInfo from "./TravelerInfo";
 import EventPlannerInfo from "./EventPlannerInfo"
 
