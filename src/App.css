@@ -116,9 +116,8 @@ section {
 
 .forecast-items {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   margin: 20px 0;
-  border:1px solid red;
   border-radius: 20px;
   background-color: rgba(255, 255, 255, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.7);
@@ -128,8 +127,10 @@ section {
 .hourly-forecast {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
+  justify-content: flex-start; 
+  flex-wrap: nowrap; 
+  overflow-x: auto; 
+  height: 140px;
 }
 
 .hourly-forecast-item {
@@ -137,14 +138,13 @@ section {
   border-radius: 10px;
   padding: 10px;
   text-align: center;
-  width: 18%;
   margin: 10px 0;
   background-color: rgba(255, 255, 255, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.7);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 120px;
-  height:120px;
-  margin:10px;
+  height: 120px;
+  margin: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -159,6 +159,7 @@ section {
   width: 50px;
   height: 50px;
 }
+
 
 .minicard {
   background: rgba(255, 255, 255, 0.1);
@@ -187,7 +188,8 @@ section {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: flex-start;
+  gap:10px;
 }
 
 .minicard p {
