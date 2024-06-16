@@ -61,7 +61,7 @@ const Weather = () => {
   const search = useCallback(
     async (location) => {
       try {
-        const url = `http://api.weatherapi.com/v1/forecast.json?key=${apikey}&q=${location}&days=3&aqi=no&alerts=yes`;
+        const url = `https://api.weatherapi.com/v1/forecast.json?key=${apikey}&q=${location}&days=3&aqi=no&alerts=yes`;
         let data = await fetch(url);
         let parsedData = await data.json();
 
